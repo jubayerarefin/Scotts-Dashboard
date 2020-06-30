@@ -92,67 +92,103 @@
 $(document).ready(function() {
     $('.input-daterange').datepicker({
         todayBtn: 'linked',
-        format: 'mm-dd-yyyy',
+        format: 'yyyy-mm-dd',
         autoclose: true
     });
 
-    $('.data-table').DataTable({
-        processing: true,
-        serverSide: true,
-        lengthMenu: [
-            [100, 250, 500, -1],
-            [100, 250, 500, "All"]
-        ],
-        dom: 'lBfrtip',
-        buttons: [
-            'excel', 'csv', 'pdf', 'copy'
-        ],
-        ajax: "{{ route('clients.index') }}",
-        "columns": [{
-                data: 'UserId',
-                name: 'UserId'
+    load_data();
+
+    function load_data(from_date = '', to_date = '') {
+
+        $('.data-table').DataTable({
+            processing: true,
+            serverSide: true,
+            lengthMenu: [
+                [100, 250, 500, -1],
+                [100, 250, 500, "All"]
+            ],
+            dom: 'Bfrtip',
+            buttons: [
+                'excel', 'csv', 'pdf', 'copy'
+            ],
+            stateSave: true,
+            ajax: {
+                url: "{{ route('clients.index') }}",
+                data: {
+                    from_date: from_date,
+                    to_date: to_date
+                }
             },
-            {
-                data: 'Email',
-                name: 'Email'
-            },
-            {
-                data: 'FirstName',
-                name: 'FirstName'
-            },
-            {
-                data: 'LastName',
-                name: 'LastName'
-            },
-            {
-                data: 'OrganizationName',
-                name: 'OrganizationName'
-            },
-            {
-                data: 'ScottsOrgId',
-                name: 'ScottsOrgId'
-            },
-            {
-                data: 'LastJournalUpdateTime',
-                name: 'LastJournalUpdateTime'
-            },
-            {
-                data: 'LastJournalUpdateDate',
-                name: 'LastJournalUpdateDate'
-            },
-            {
-                data: 'CreatedAtUser',
-                name: 'CreatedAtUser'
-            },
-            {
-                data: 'CreatedAtOrganization',
-                name: 'CreatedAtOrganization'
-            },
-            {
-                data: 'SubscribedUntil',
-                name: 'SubscribedUntil'
-            },
-        ]
+            "columns": [{
+                    data: 'UserId',
+                    name: 'UserId'
+                },
+                {
+                    data: 'Email',
+                    name: 'Email'
+                },
+                {
+                    data: 'FirstName',
+                    name: 'FirstName'
+                },
+                {
+                    data: 'LastName',
+                    name: 'LastName'
+                },
+                {
+                    data: 'OrganizationName',
+                    name: 'OrganizationName'
+                },
+                {
+                    data: 'ScottsOrgId',
+                    name: 'ScottsOrgId'
+                },
+                {
+                    data: 'LastJournalUpdateTime',
+                    name: 'LastJournalUpdateTime'
+                },
+                {
+                    data: 'LastJournalUpdateDate',
+                    name: 'LastJournalUpdateDate'
+                },
+                {
+                    data: 'CreatedAtUser',
+                    name: 'CreatedAtUser'
+                },
+                {
+                    data: 'CreatedAtOrganization',
+                    name: 'CreatedAtOrganization'
+                },
+                {
+                    data: 'SubscribedUntil',
+                    name: 'SubscribedUntil'
+                },
+            ]
+        });
+        console.log("Date being sent to ajax", to_date);
+
+    }
+
+    $('#filter').click(function() {
+        var from_date = $('#from_date').val();
+        var to_date = $('#to_date').val();
+        if (from_date != '' && to_date != '') {
+            $('.data-table').DataTable().destroy();
+
+            load_data(from_date, to_date);
+            console.log("date when clicking refresh", to_date);
+
+        } else {
+            alert('Both Date is required');
+        }
     });
+
+    $('#refresh').click(function() {
+        $('#from_date').val('');
+        $('#to_date').val('');
+        $('.data-table').DataTable().destroy();
+        load_data();
+    });
+
 });
 </script>

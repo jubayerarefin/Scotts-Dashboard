@@ -12,8 +12,16 @@ use Illuminate\Support\Facades\Artisan;
 | commands. Each Closure is bound to a command instance allowing a
 | simple approach to interacting with each command's IO methods.
 |
-*/
+ */
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->describe('Display an inspiring quote');
+
+Artisan::command('logs:clear', function () {
+
+    exec('rm ' . storage_path('logs/*.log'));
+
+    $this->comment('Logs have been cleared!');
+
+})->describe('Clear log files');
