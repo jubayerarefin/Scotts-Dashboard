@@ -18,6 +18,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
 </head>
 
+
 <body>
     <div class="container">
         <div class="row ">
@@ -78,7 +79,6 @@
                         </tr>
                     </thead>
                     <tbody>
-
                     </tbody>
                 </table>
             </div>
@@ -98,8 +98,7 @@ $(document).ready(function() {
 
     load_data();
 
-    function load_data(from_date = '', to_date = '') {
-
+    function load_data(from_date = null, to_date = null) {
         $('.data-table').DataTable({
             processing: true,
             serverSide: true,
@@ -113,7 +112,8 @@ $(document).ready(function() {
             ],
             stateSave: true,
             ajax: {
-                url: "{{ route('clients.index') }}",
+                url: '{{ route("clients.index") }}',
+                method: "GET",
                 data: {
                     from_date: from_date,
                     to_date: to_date
@@ -165,8 +165,6 @@ $(document).ready(function() {
                 },
             ]
         });
-        console.log("Date being sent to ajax", to_date);
-
     }
 
     $('#filter').click(function() {
@@ -176,8 +174,6 @@ $(document).ready(function() {
             $('.data-table').DataTable().destroy();
 
             load_data(from_date, to_date);
-            console.log("date when clicking refresh", to_date);
-
         } else {
             alert('Both Date is required');
         }
@@ -189,6 +185,5 @@ $(document).ready(function() {
         $('.data-table').DataTable().destroy();
         load_data();
     });
-
-});
+})
 </script>

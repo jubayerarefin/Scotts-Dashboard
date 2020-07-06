@@ -12,9 +12,14 @@ class Client extends Model
      * @var string
      */
     protected $_table      = 'user';
-    protected $_primaryKey = 'userId';
+    protected $_primaryKey = 'UserId';
     public $incrementing   = false;
     const CREATED_AT       = 'CreatedAt';
     const UPDATED_AT       = 'UpdatedAt';
-    protected $_connection  = 'mysql2';
+    protected $_connection = 'mysql2';
+
+    public function organizations()
+    {
+        return $this->belongsToMany("Organization"::class, 'u_o_bridge');
+    }
 }
