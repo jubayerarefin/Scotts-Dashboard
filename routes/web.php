@@ -22,5 +22,3 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/clients', ['uses' => 'ClientController@index', 'as' => 'clients.index']);
-
-Route::resource('daterange', 'DateRangeController');

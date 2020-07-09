@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "566391334d5c4a45090800780dd44a10",
+    "content-hash": "f49678c56a4fa1f19328908a896aacef",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4968,16 +4968,16 @@
         },
         {
             "name": "yajra/laravel-datatables-buttons",
-            "version": "v4.9.2",
+            "version": "v4.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yajra/laravel-datatables-buttons.git",
-                "reference": "3d7bb45c00e82f7cb84ad11ec905a95d24c51821"
+                "reference": "0ba6c5e095ed1e51d09643639290cbaaa35730b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yajra/laravel-datatables-buttons/zipball/3d7bb45c00e82f7cb84ad11ec905a95d24c51821",
-                "reference": "3d7bb45c00e82f7cb84ad11ec905a95d24c51821",
+                "url": "https://api.github.com/repos/yajra/laravel-datatables-buttons/zipball/0ba6c5e095ed1e51d09643639290cbaaa35730b8",
+                "reference": "0ba6c5e095ed1e51d09643639290cbaaa35730b8",
                 "shasum": ""
             },
             "require": {
@@ -5038,7 +5038,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-06-13T00:21:34+00:00"
+            "time": "2020-07-07T01:57:55+00:00"
         },
         {
             "name": "yajra/laravel-datatables-editor",
