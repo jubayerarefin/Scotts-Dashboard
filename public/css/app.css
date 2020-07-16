@@ -171,7 +171,6 @@ sup {
 
 a {
   color: #3490dc;
-  text-decoration: none;
   background-color: transparent;
 }
 
@@ -579,6 +578,16 @@ pre code {
   margin-right: auto;
   margin-left: auto;
 }
+.dt-buttons {
+    position: relative !important;
+    float: right !important
+}
+.dataTables_filter {
+    float: left !important;
+}
+.dt-button-collection {
+left: 0px !important;
+}
 
 @media (min-width: 576px) {
   .container {
@@ -600,9 +609,10 @@ pre code {
 
 @media (min-width: 1200px) {
   .container {
-    max-width: 1140px;
+    max-width: 1400px !important
   }
 }
+
 
 .container-fluid,
 .container-xl,
@@ -655,6 +665,7 @@ pre code {
   flex-wrap: wrap;
   margin-right: -15px;
   margin-left: -15px;
+  margin-top: 50px;
 }
 
 .no-gutters {

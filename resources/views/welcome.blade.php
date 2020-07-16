@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Laravel</title>
+    <title>Scott's Customer Care</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -71,7 +71,16 @@
         @if (Route::has('login'))
         <div class="top-right links">
             @auth
-            <a href="{{ url('/clients') }}">Customer Dashboard</a>
+            <div class="dropdown-menu dropdown-menu-right links" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                    {{ __('Logout') }}
+                </a>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+            </div>
             @else
             <a href="{{ route('login') }}">Login</a>
 
@@ -87,9 +96,19 @@
                 Scott's Customer Care
             </div>
 
+            @if (Route::has('login'))
             <div class="links">
-                <a href="https://scottsaddins.com/">Scott's Add Ins</a>
+                @auth
+                <a href="{{ url('/clients') }}" class="btn btn-secondary btn-lg active" role="button"
+                    aria-pressed="true">Customer Dashboard</a>
+                <a href="https://scottsaddins.com/" class="btn btn-secondary btn-lg active" role="button"
+                    aria-pressed="true" target="_blank">Scott's Add Ins</a>
+                @else
+                <a href="https://scottsaddins.com/" class="btn btn-secondary btn-lg active" role="button"
+                    aria-pressed="true" target="_blank">Scott's Add Ins</a>
+                @endauth
             </div>
+            @endif
         </div>
     </div>
 </body>

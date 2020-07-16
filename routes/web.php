@@ -21,4 +21,13 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/clients', ['uses' => 'ClientController@index', 'as' => 'clients.index']);
+Route::group(['prefix' => 'clients', 'as' => 'clients.', 'middleware' => 'auth'], function () {
+
+    Route::get('/', 'ClientController@index')->name('index');
+
+});
+
+// Route::get('/clients', ['uses' => 'ClientController@index', 'as' => 'clients.index']);
+// Route::get('/connect', 'AccountController@connect')->name('connect');
+// Route::get('/update', 'AccountController@update')->name('update');
+// Route::post('/update', 'AccountController@store')->name('store');

@@ -4,24 +4,31 @@
 <head>
     <title>Customer Dashboard (Scott's Add-Ins)</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
-    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
 
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.flash.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js"></script>
 </head>
 
 
@@ -29,7 +36,7 @@
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
-                {{ config('app.name', 'Laravel') }}
+                Customer Dashboard
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -86,74 +93,70 @@
     <!--  -->
     <!--  -->
     <div class="container">
-        <div class="row ">
+        <div class="row">
+            <h4>Organization - Created Date Range Search</h4>
+        </div>
+        <div class="row" style="margin-top: 25px ">
             <div class="col-md-4 input-daterange">
                 <input type="text" name="from_date" id="from_date" class="form-control" placeholder="From Date"
-                    readonly />
+                    autocomplete="off" />
             </div>
             <div class="col-md-4 input-daterange">
-                <input type="text" name="to_date" id="to_date" class="form-control" placeholder="To Date" readonly />
+                <input type="text" name="to_date" id="to_date" class="form-control" placeholder="To Date"
+                    autocomplete="off" />
             </div>
             <div class="col-md-4">
-                <button type="button" name="filter" id="filter" class="btn btn-primary">Filter</button>
-                <button type="button" name="refresh" id="refresh" class="btn btn-default">Refresh</button>
+                <button type="button" name="filter" id="filter" class="btn btn-primary">Search Daterange</button>
+                <button type="button" name="refresh" id="refresh" class="btn btn-secondary">Refresh</button>
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="margin-bottom: 25px">
             <div class="table-responsive">
-                <form method="POST" id="convert_form" action="export.php">
-                    <div class="row">
-                        <div class="col-lg-5">
-                            <input type="hidden" name="file_content" id="file_content" />
-                            <button type="button" name="convert" id="convert" class="btn btn-light">Export</button>
-                        </div>
-                    </div>
-                    <table class="table table-striped table-hover table-bordered display nowrap data-table"
-                        style="width:100%" id="table_content">
-                        <thead>
-                            <tr>
-                                <th data-class-name="priority">
-                                    User ID
-                                </th>
-                                <th>
-                                    Email
-                                </th>
-                                <th>
-                                    First Name
-                                </th>
-                                <th>
-                                    Last Name
-                                </th>
-                                <th>
-                                    Organization Name
-                                </th>
-                                <th>
-                                    Scott's Org ID
-                                </th>
-                                <th style="white-space: inherit">
-                                    Last Journal Update
-                                    (Time)
-                                </th>
-                                <th style="white-space: inherit">
-                                    Last Journal Update
-                                    (Date)
-                                </th>
-                                <th style="white-space: inherit">
-                                    Created At (User)
-                                </th>
-                                <th style="white-space: inherit">
-                                    Created At
-                                    (Organization)
-                                </th>
-                                <th>
-                                    Subscribed until
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </form>
+                <table class="table table-striped table-hover table-bordered display nowrap data-table"
+                    style="width:100%" id="table_content">
+                    <thead>
+                        <tr>
+                            <th data-class-name="priority">
+                                User ID
+                            </th>
+                            <th>
+                                Email
+                            </th>
+                            <th>
+                                First Name
+                            </th>
+                            <th>
+                                Last Name
+                            </th>
+                            <th>
+                                Organization Name
+                            </th>
+                            <th>
+                                Scott's Org ID
+                            </th>
+                            <th style="min-width: 100px">
+                                Last Journal Update
+                                (Time)
+                            </th>
+                            <th style="min-width: 100px">
+                                Last Journal Update
+                                (Date)
+                            </th>
+                            <th style="min-width: 100px">
+                                Created At (User)
+                            </th>
+                            <th style="min-width: 100px">
+                                Created At
+                                (Organization)
+                            </th>
+                            <th>
+                                Subscribed until
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -165,7 +168,7 @@
 $(document).ready(function() {
     $('.input-daterange').datepicker({
         todayBtn: 'linked',
-        format: 'yyyy-mm-dd',
+        format: 'mm-dd-yyyy',
         autoclose: true
     });
 
@@ -182,32 +185,15 @@ $(document).ready(function() {
     function load_data(from_date = null, to_date = null) {
         $('.data-table').DataTable({
             processing: true,
-            serverSide: true,
+            serverSide: false,
             lengthMenu: [
                 [100, 250, 500, -1],
                 [100, 250, 500, "All"]
             ],
             dom: 'Bfrtip',
             buttons: [
-                'copy', 'print',
-                {
-                    extend: 'excel',
-                    filename: 'PartDetails',
-                    footer: true
-                },
-                {
-                    extend: 'pdf',
-                    filename: 'PartDetails'
-                },
-                {
-                    extend: 'csvHtml5',
-                    filename: 'PartDetails'
-                },
-                {
-                    extend: 'collection',
-                    text: 'columns',
-                    buttons: ['columnsVisibility']
-                }
+                'pageLength',
+                'csv',
             ],
             stateSave: true,
             ajax: {
@@ -274,7 +260,7 @@ $(document).ready(function() {
 
             load_data(from_date, to_date);
         } else {
-            alert('Both Date is required');
+            alert('Both Dates are required');
         }
     });
 
