@@ -22,9 +22,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'clients', 'as' => 'clients.', 'middleware' => 'auth'], function () {
-
     Route::get('/', 'ClientController@index')->name('index');
-
 });
 
 // Route::get('/clients', ['uses' => 'ClientController@index', 'as' => 'clients.index']);

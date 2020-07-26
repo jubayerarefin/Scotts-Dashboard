@@ -56,11 +56,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                     </li>
-                    @if (Route::has('register'))
+                    <!-- @if (Route::has('register'))
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                     </li>
-                    @endif
+                    @endif -->
                     @else
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
@@ -96,22 +96,30 @@
         <div class="row">
             <h4>Organization - Created Date Range Search</h4>
         </div>
-        <div class="row" style="margin-top: 25px ">
-            <div class="col-md-4 input-daterange">
-                <input type="text" name="from_date" id="from_date" class="form-control" placeholder="From Date"
-                    autocomplete="off" />
+        <div class="row" style="margin-top: 25px; display: flex">
+            <div class="col-row" style="display: flex">
+                <div class="col-md-4 input-daterange">
+                    <input type="text" name="from_date" id="from_date" class="form-control" placeholder="From Date"
+                        autocomplete="off" />
+                </div>
+                <div class="col-md-4 input-daterange">
+                    <input type="text" name="to_date" id="to_date" class="form-control" placeholder="To Date"
+                        autocomplete="off" />
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="subscribedBox">
+                    <label class="form-check-label" for="defaultCheck1">
+                        Subscribed only
+                    </label>
+                </div>
             </div>
-            <div class="col-md-4 input-daterange">
-                <input type="text" name="to_date" id="to_date" class="form-control" placeholder="To Date"
-                    autocomplete="off" />
-            </div>
-            <div class="col-md-4">
-                <button type="button" name="filter" id="filter" class="btn btn-primary">Search Daterange</button>
+            <div class="col">
+                <button type="button" name="filter" id="filter" class="btn btn-primary">Search date range</button>
                 <button type="button" name="refresh" id="refresh" class="btn btn-secondary">Refresh</button>
             </div>
         </div>
         <div class="row" style="margin-bottom: 25px">
-            <div class="table-responsive">
+            <div class="table-responsive" style="overflow-x:scroll; overflow-y: scroll">
                 <table class="table table-striped table-hover table-bordered display nowrap data-table"
                     style="width:100%" id="table_content">
                     <thead>
@@ -172,6 +180,14 @@ $(document).ready(function() {
         autoclose: true
     });
 
+    $('input[type="checkbox"]').click(function() {
+        if ($(this).prop("checked") == true) {
+            console.log("Checkbox is checked.");
+        } else if ($(this).prop("checked") == false) {
+            console.log("Checkbox is unchecked.");
+        }
+    });
+
     $('#convert').click(function() {
         var table_content = '<table>';
         table_content += $('#table_content').html();
@@ -182,9 +198,9 @@ $(document).ready(function() {
 
     load_data();
 
-    function load_data(from_date = null, to_date = null) {
+    function load_data(from_date = null, to_date = null, subscribedBox = null) {
         $('.data-table').DataTable({
-            processing: true,
+            processing: false,
             serverSide: false,
             lengthMenu: [
                 [100, 250, 500, -1],
@@ -201,52 +217,53 @@ $(document).ready(function() {
                 method: "GET",
                 data: {
                     from_date: from_date,
-                    to_date: to_date
+                    to_date: to_date,
+                    subscribedBox: subscribedBox
                 }
             },
             "columns": [{
-                    data: 'UserId',
-                    name: 'UserId'
+                    "data": 'UserId',
+                    "name": 'UserId'
                 },
                 {
-                    data: 'Email',
-                    name: 'Email'
+                    "data": 'Email',
+                    "name": 'Email'
                 },
                 {
-                    data: 'FirstName',
-                    name: 'FirstName'
+                    "data": 'FirstName',
+                    "name": 'FirstName'
                 },
                 {
-                    data: 'LastName',
-                    name: 'LastName'
+                    "data": 'LastName',
+                    "name": 'LastName'
                 },
                 {
-                    data: 'OrganizationName',
-                    name: 'OrganizationName'
+                    "data": 'OrganizationName',
+                    "name": 'OrganizationName'
                 },
                 {
-                    data: 'ScottsOrgId',
-                    name: 'ScottsOrgId'
+                    "data": 'ScottsOrgId',
+                    "name": 'ScottsOrgId'
                 },
                 {
-                    data: 'LastJournalUpdateTime',
-                    name: 'LastJournalUpdateTime'
+                    "data": 'LastJournalUpdateTime',
+                    "name": 'LastJournalUpdateTime'
                 },
                 {
-                    data: 'LastJournalUpdateDate',
-                    name: 'LastJournalUpdateDate'
+                    "data": 'LastJournalUpdateDate',
+                    "name": 'LastJournalUpdateDate'
                 },
                 {
-                    data: 'CreatedAtUser',
-                    name: 'CreatedAtUser'
+                    "data": 'CreatedAtUser',
+                    "name": 'CreatedAtUser'
                 },
                 {
-                    data: 'CreatedAtOrganization',
-                    name: 'CreatedAtOrganization'
+                    "data": 'CreatedAtOrganization',
+                    "name": 'CreatedAtOrganization'
                 },
                 {
-                    data: 'SubscribedUntil',
-                    name: 'SubscribedUntil'
+                    "data": 'SubscribedUntil',
+                    "name": 'SubscribedUntil'
                 },
             ]
         });
@@ -255,18 +272,23 @@ $(document).ready(function() {
     $('#filter').click(function() {
         var from_date = $('#from_date').val();
         var to_date = $('#to_date').val();
+        var subscribedBox = false
+        // if ($('input:checkbox').prop('checked')) == true {
+        //     var subscribedBox = true
+        // };
         if (from_date != '' && to_date != '') {
             $('.data-table').DataTable().destroy();
-
-            load_data(from_date, to_date);
+            load_data(from_date, to_date, subscribedBox);
+            alert('refreshed!')
         } else {
             alert('Both Dates are required');
-        }
+        };
     });
 
     $('#refresh').click(function() {
         $('#from_date').val('');
         $('#to_date').val('');
+        $('input:checkbox').prop('checked', false);
         $('.data-table').DataTable().destroy();
         load_data();
     });
