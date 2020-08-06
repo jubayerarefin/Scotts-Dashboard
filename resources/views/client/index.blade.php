@@ -108,7 +108,7 @@
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" id="subscribedBox">
-                    <label class="form-check-label" for="defaultCheck1">
+                    <label class="form-check-label" id="subscribedBox" for="defaultCheck1">
                         Subscribed only
                     </label>
                 </div>
@@ -174,19 +174,21 @@
 
 <script>
 $(document).ready(function() {
+    var subscribedBox = false
+
     $('.input-daterange').datepicker({
         todayBtn: 'linked',
         format: 'mm-dd-yyyy',
         autoclose: true
     });
 
-    $('input[type="checkbox"]').click(function() {
-        if ($(this).prop("checked") == true) {
-            console.log("Checkbox is checked.");
-        } else if ($(this).prop("checked") == false) {
-            console.log("Checkbox is unchecked.");
-        }
-    });
+    // $('input[type="checkbox"]').click(function() {
+    //     if ($(this).prop("checked") == true) {
+    //         console.log("Checkbox is checked.");
+    //     } else if ($(this).prop("checked") == false) {
+    //         console.log("Checkbox is unchecked.");
+    //     }
+    // });
 
     $('#convert').click(function() {
         var table_content = '<table>';
@@ -269,24 +271,35 @@ $(document).ready(function() {
         });
     }
 
+    $('#subscribedBox').click(function() {
+        console.log(this.checked);
+        if (this.checked == true) {
+            echo('subscribed');
+        } else {
+            $('Not subscribed').hide();
+        }
+    });
+
     $('#filter').click(function() {
         var from_date = $('#from_date').val();
         var to_date = $('#to_date').val();
-        var subscribedBox = false
-        // if ($('input:checkbox').prop('checked')) == true {
-        //     var subscribedBox = true
-        // };
+        var subscribed_box = false;
         if (from_date != '' && to_date != '') {
+            if (document.getElementById('subscribedBox').checked) {
+                subscribed_box = true;
+            }
             $('.data-table').DataTable().destroy();
-            load_data(from_date, to_date, subscribedBox);
-            alert('refreshed!')
+            load_data(from_date, to_date, subscribed_box);
         } else {
             alert('Both Dates are required');
         };
     });
 
     $('#refresh').click(function() {
-        $('#from_date').val('');
+        $
+
+         
+   ('#from_date').val('');
         $('#to_date').val('');
         $('input:checkbox').prop('checked', false);
         $('.data-table').DataTable().destroy();
