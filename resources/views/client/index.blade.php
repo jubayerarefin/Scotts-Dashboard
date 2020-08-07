@@ -237,7 +237,13 @@ $(document).ready(function() {
                 { width: 80, targets: 7, class: "text-center" },
                 { width: 80, targets: 8, class: "text-center" },
                 { width: 80, targets: 9, class: "text-center" },
-                { width: 80, targets: 10, class: "text-center" }
+                { width: 80, targets: 10, class: "text-center",
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        if ( cellData === null ) {
+                            $(td).addClass('not-subscribed');
+                        }
+                    }
+                }
             ],
             fixedColumns: false,
             autoWidth: false,
@@ -290,17 +296,20 @@ $(document).ready(function() {
                     "name": 'SubscribedUntil'
                 },
             ],
-            rowCallback: function( row, data ) {
+            createdRow: function(row, data, dataIndex) {                
+                if (data.SubscribedUntil === null) {
+                    $(row).addClass('text-danger');
+                }
+            },
+            rowCallback: function(row, data) {
                 $('td:eq(0)', row).html(parseInt(data.UserId));
                 $('td:eq(5)', row).html(parseInt(data.ScottsOrgId));
-                console.log(data.UserId,data.ScottsOrgId);
             },
-            preDrawCallback: function( settings ) {
+            preDrawCallback: function(settings) {
                 // $('#example tbody').off( 'click', 'td' );
             },
-            drawCallback: function( settings ) {
-                var api = this.api();
-        
+            drawCallback: function(settings) {
+                // var api = this.api();        
                 // Output the data for the visible rows to the browser's console
                 // console.log( api.rows( {page:'current'} ).data() );
             }
@@ -313,11 +322,11 @@ $(document).ready(function() {
     });
 
     $('#subscribedBox').click(function() {
-        console.log(this.checked);
-        if (this.checked == true) {
-            echo('subscribed');
-        } else {
-            $('Not subscribed').hide();
+        if (this.checked === true) {
+            $('.data-table').DataTable().rows('.text-danger').remove().draw();
+        }else{
+            $('.data-table').DataTable().destroy();
+            load_data();
         }
     });
 
