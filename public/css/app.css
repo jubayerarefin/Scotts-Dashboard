@@ -10939,3 +10939,6 @@ a.text-dark:focus {
   }
 }
 
+.word-wrap{
+  overflow-wrap: break-word;
+}

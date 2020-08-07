@@ -127,7 +127,7 @@
                             <th data-class-name="priority">
                                 User ID
                             </th>
-                            <th>
+                            <th style="min-width:100px;">
                                 Email
                             </th>
                             <th>
@@ -136,29 +136,29 @@
                             <th>
                                 Last Name
                             </th>
-                            <th>
+                            <th style="min-width:100px;">
                                 Organization Name
                             </th>
                             <th>
                                 Scott's Org ID
                             </th>
-                            <th style="min-width: 100px">
+                            <th>
                                 Last Journal Update
                                 (Time)
                             </th>
-                            <th style="min-width: 100px">
+                            <th>
                                 Last Journal Update
                                 (Date)
                             </th>
-                            <th style="min-width: 100px">
+                            <th>
                                 Created At (User)
                             </th>
-                            <th style="min-width: 100px">
+                            <th>
                                 Created At
                                 (Organization)
                             </th>
                             <th>
-                                Subscribed until
+                                Subscribed Until
                             </th>
                         </tr>
                     </thead>
@@ -223,21 +223,34 @@ $(document).ready(function() {
                     subscribedBox: subscribedBox
                 }
             },
-            scrollY: "500px",
+            scrollY: "500px", //DT Height
             scrollX: true,
             scrollCollapse: true,
             columnDefs: [
-                { width: 50, targets: 1 }
+                { width: 50, targets: 0, class: "text-center" },
+                { width: 100, targets: 1, class: "text-center" },
+                { width: 60, targets: 2, class: "text-center" },
+                { width: 60, targets: 3, class: "text-center" },
+                { width: 100, targets: 4, class: "text-center" },
+                { width: 60, targets: 5, class: "text-center" },
+                { width: 80, targets: 6, class: "text-center" },
+                { width: 80, targets: 7, class: "text-center" },
+                { width: 80, targets: 8, class: "text-center" },
+                { width: 80, targets: 9, class: "text-center" },
+                { width: 80, targets: 10, class: "text-center" }
             ],
+            fixedColumns: false,
             autoWidth: false,
-            fixedColumns: true,
-            columns: [{
+            columns: [
+                {
                     "data": 'UserId',
-                    "name": 'UserId'
+                    "name": 'UserId',
+                    "width": "60"
                 },
                 {
                     "data": 'Email',
-                    "name": 'Email'
+                    "name": 'Email',
+                    "width": "100"
                 },
                 {
                     "data": 'FirstName',
@@ -249,7 +262,8 @@ $(document).ready(function() {
                 },
                 {
                     "data": 'OrganizationName',
-                    "name": 'OrganizationName'
+                    "name": 'OrganizationName',
+                    "width": "100"
                 },
                 {
                     "data": 'ScottsOrgId',
@@ -275,10 +289,28 @@ $(document).ready(function() {
                     "data": 'SubscribedUntil',
                     "name": 'SubscribedUntil'
                 },
-            ]
+            ],
+            rowCallback: function( row, data ) {
+                $('td:eq(0)', row).html(parseInt(data.UserId));
+                $('td:eq(5)', row).html(parseInt(data.ScottsOrgId));
+                console.log(data.UserId,data.ScottsOrgId);
+            },
+            preDrawCallback: function( settings ) {
+                // $('#example tbody').off( 'click', 'td' );
+            },
+            drawCallback: function( settings ) {
+                var api = this.api();
+        
+                // Output the data for the visible rows to the browser's console
+                // console.log( api.rows( {page:'current'} ).data() );
+            }
         });
         table.columns.adjust().draw();
     }
+
+    $('.data-table').on( 'column-sizing.dt', function ( e, settings ) {
+        console.log( 'Column width recalculated in table' );
+    });
 
     $('#subscribedBox').click(function() {
         console.log(this.checked);
@@ -305,14 +337,11 @@ $(document).ready(function() {
     });
 
     $('#refresh').click(function() {
-        $
-
-         
-   ('#from_date').val('');
+        $('#from_date').val('');
         $('#to_date').val('');
         $('input:checkbox').prop('checked', false);
         $('.data-table').DataTable().destroy();
         load_data();
     });
-})
+});
 </script>
