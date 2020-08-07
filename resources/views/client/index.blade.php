@@ -119,7 +119,7 @@
             </div>
         </div>
         <div class="row" style="margin-bottom: 25px">
-            <div class="table-responsive" style="overflow-x:scroll; overflow-y: scroll">
+            <div class="table-responsive" style="">
                 <table class="table table-striped table-hover table-bordered display nowrap data-table"
                     style="width:100%" id="table_content">
                     <thead>
@@ -201,12 +201,12 @@ $(document).ready(function() {
     load_data();
 
     function load_data(from_date = null, to_date = null, subscribedBox = null) {
-        $('.data-table').DataTable({
+        var table = $('.data-table').DataTable({
             processing: false,
             serverSide: false,
             lengthMenu: [
-                [100, 250, 500, -1],
-                [100, 250, 500, "All"]
+                [10, 25, 50, 100, 250, 500, -1],
+                [10, 25, 50, 100, 250, 500, "All"]
             ],
             dom: 'Bfrtip',
             buttons: [
@@ -223,7 +223,15 @@ $(document).ready(function() {
                     subscribedBox: subscribedBox
                 }
             },
-            "columns": [{
+            scrollY: "500px",
+            scrollX: true,
+            scrollCollapse: true,
+            columnDefs: [
+                { width: 50, targets: 1 }
+            ],
+            autoWidth: false,
+            fixedColumns: true,
+            columns: [{
                     "data": 'UserId',
                     "name": 'UserId'
                 },
@@ -269,6 +277,7 @@ $(document).ready(function() {
                 },
             ]
         });
+        table.columns.adjust().draw();
     }
 
     $('#subscribedBox').click(function() {
