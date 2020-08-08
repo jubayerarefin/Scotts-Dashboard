@@ -124,40 +124,40 @@
                     style="width:100%" id="table_content">
                     <thead>
                         <tr>
-                            <th data-class-name="priority">
+                            <th class="text-center" data-class-name="priority">
                                 User ID
                             </th>
-                            <th style="min-width:100px;">
+                            <th class="text-center">
                                 Email
                             </th>
-                            <th>
+                            <th class="text-center">
                                 First Name
                             </th>
-                            <th>
+                            <th class="text-center">
                                 Last Name
                             </th>
-                            <th style="min-width:100px;">
+                            <th class="text-center">
                                 Organization Name
                             </th>
-                            <th>
+                            <th class="text-center">
                                 Scott's Org ID
                             </th>
-                            <th>
+                            <th class="text-center">
                                 Last Journal Update
                                 (Time)
                             </th>
-                            <th>
+                            <th class="text-center">
                                 Last Journal Update
                                 (Date)
                             </th>
-                            <th>
+                            <th class="text-center">
                                 Created At (User)
                             </th>
-                            <th>
+                            <th class="text-center">
                                 Created At
                                 (Organization)
                             </th>
-                            <th>
+                            <th class="text-center">
                                 Subscribed Until
                             </th>
                         </tr>
@@ -181,14 +181,6 @@ $(document).ready(function() {
         format: 'mm-dd-yyyy',
         autoclose: true
     });
-
-    // $('input[type="checkbox"]').click(function() {
-    //     if ($(this).prop("checked") == true) {
-    //         console.log("Checkbox is checked.");
-    //     } else if ($(this).prop("checked") == false) {
-    //         console.log("Checkbox is unchecked.");
-    //     }
-    // });
 
     $('#convert').click(function() {
         var table_content = '<table>';
@@ -223,21 +215,38 @@ $(document).ready(function() {
                     subscribedBox: subscribedBox
                 }
             },
-            scrollY: "500px", //DT Height
+            scrollY: 500, //DT Height in Pixels
             scrollX: true,
             scrollCollapse: true,
+            scroller: {
+                rowHeight: "50px" //Default Height
+            },
             columnDefs: [
-                { width: 50, targets: 0, class: "text-center" },
-                { width: 100, targets: 1, class: "text-center" },
-                { width: 60, targets: 2, class: "text-center" },
-                { width: 60, targets: 3, class: "text-center" },
-                { width: 100, targets: 4, class: "text-center" },
-                { width: 60, targets: 5, class: "text-center" },
-                { width: 80, targets: 6, class: "text-center" },
-                { width: 80, targets: 7, class: "text-center" },
-                { width: 80, targets: 8, class: "text-center" },
-                { width: 80, targets: 9, class: "text-center" },
-                { width: 80, targets: 10, class: "text-center",
+                { width: "50px", targets: 0, class: "text-center" },
+                { width: "250px", targets: 1, class: "word-wrap",
+                    render : function ( data, type, row ) {
+                        if ( type === 'display' ) {
+                            return `<div style="width:250px"> ${data.slice(0,27)} <br> ${data.slice(28,data.length)} </div>`;
+                        }
+                        return data;
+                    }
+                },
+                { width: "60px", targets: 2, class: "text-center" },
+                { width: "60px", targets: 3, class: "text-center" },
+                { width: "100px", targets: 4, class: "",
+                    render : function ( data, type, row ) {
+                        if ( type === 'display' ) {
+                            return `<div style="width:250px"> ${data.slice(0,27)} <br> ${data.slice(28,55)} <br> ${data.slice(56,data.length)} </div>`;
+                        }
+                        return data;
+                    }
+                },
+                { width: "60px", targets: 5, class: "text-center" },
+                { width: "80px", targets: 6, class: "text-center" },
+                { width: "80px", targets: 7, class: "text-center" },
+                { width: "80px", targets: 8, class: "text-center" },
+                { width: "80px", targets: 9, class: "text-center" },
+                { width: "80px", targets: 10, class: "text-center",
                     createdCell: function (td, cellData, rowData, row, col) {
                         if ( cellData === null ) {
                             $(td).addClass('not-subscribed');
@@ -245,18 +254,17 @@ $(document).ready(function() {
                     }
                 }
             ],
-            fixedColumns: false,
-            autoWidth: false,
+            fixedColumns: {},
+            autoWidth: true,
+            deferRender: true,
             columns: [
                 {
                     "data": 'UserId',
-                    "name": 'UserId',
-                    "width": "60"
+                    "name": 'UserId'
                 },
                 {
                     "data": 'Email',
-                    "name": 'Email',
-                    "width": "100"
+                    "name": 'Email'
                 },
                 {
                     "data": 'FirstName',
@@ -268,8 +276,7 @@ $(document).ready(function() {
                 },
                 {
                     "data": 'OrganizationName',
-                    "name": 'OrganizationName',
-                    "width": "100"
+                    "name": 'OrganizationName'
                 },
                 {
                     "data": 'ScottsOrgId',
@@ -300,6 +307,10 @@ $(document).ready(function() {
                 if (data.SubscribedUntil === null) {
                     $(row).addClass('text-danger');
                 }
+                
+                // var api = this.api();
+                // var longest = api.rows({page:'ALL'}).column(1).data().sort().reverse()[0];
+                // console.log(longest);
             },
             rowCallback: function(row, data) {
                 $('td:eq(0)', row).html(parseInt(data.UserId));
@@ -314,11 +325,12 @@ $(document).ready(function() {
                 // console.log( api.rows( {page:'current'} ).data() );
             }
         });
+        table.column('0:visible').order('asc').draw();
         table.columns.adjust().draw();
     }
 
     $('.data-table').on( 'column-sizing.dt', function ( e, settings ) {
-        console.log( 'Column width recalculated in table' );
+        // console.log( 'Column width recalculated in table' );
     });
 
     $('#subscribedBox').click(function() {
