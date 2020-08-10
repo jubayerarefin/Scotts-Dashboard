@@ -29,6 +29,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>
 </head>
 
 
@@ -257,10 +259,13 @@ $(document).ready(function() {
             fixedColumns: {},
             autoWidth: true,
             deferRender: true,
+            rowReorder: true,
+            colReorder: true,
             columns: [
                 {
                     "data": 'UserId',
-                    "name": 'UserId'
+                    "name": 'UserId',
+                    "orderDataType": "dom-text", type: 'integer'
                 },
                 {
                     "data": 'Email',
@@ -280,7 +285,8 @@ $(document).ready(function() {
                 },
                 {
                     "data": 'ScottsOrgId',
-                    "name": 'ScottsOrgId'
+                    "name": 'ScottsOrgId',
+                    "orderDataType": "dom-text", type: 'integer'
                 },
                 {
                     "data": 'LastJournalUpdateTime',
@@ -314,7 +320,11 @@ $(document).ready(function() {
             },
             rowCallback: function(row, data) {
                 $('td:eq(0)', row).html(parseInt(data.UserId));
-                $('td:eq(5)', row).html(parseInt(data.ScottsOrgId));
+                $('td:eq(5)', row).html(parseInt(data.ScottsOrgId));                
+                $('td:eq(7)', row).html(data.LastJournalUpdateDate !== null ? moment(data.LastJournalUpdateDate).format('dddd, MMMM Do, YYYY') : null);
+                $('td:eq(8)', row).html(data.CreatedAtUser !== null ? moment(data.CreatedAtUser).format('dddd, MMMM Do, YYYY') : null);
+                $('td:eq(9)', row).html(data.CreatedAtOrganization !== null ? moment(data.CreatedAtOrganization).format('dddd, MMMM Do, YYYY') : null);
+                $('td:eq(10)', row).html(data.SubscribedUntil !== null ? moment(data.SubscribedUntil).format('dddd, MMMM Do, YYYY') : null);
             },
             preDrawCallback: function(settings) {
                 // $('#example tbody').off( 'click', 'td' );
