@@ -219,7 +219,7 @@ $(document).ready(function() {
             scrollX: true,
             scrollCollapse: true,
             scroller: {
-                rowHeight: "50px" //Default Height
+                rowHeight: 30 //Default Height
             },
             columnDefs: [
                 { width: "50px", targets: 0, class: "text-center" },
