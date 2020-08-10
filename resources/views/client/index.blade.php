@@ -197,8 +197,8 @@ $(document).ready(function() {
             processing: false,
             serverSide: false,
             lengthMenu: [
-                [10, 25, 50, 100, 250, 500, -1],
-                [10, 25, 50, 100, 250, 500, "All"]
+                [50, 100, 250, 500, -1],
+                [50, 100, 250, 500, "All"]
             ],
             dom: 'Bfrtip',
             buttons: [
