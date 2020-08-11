@@ -228,7 +228,7 @@ $(document).ready(function() {
                 { width: "250px", targets: 1, class: "word-wrap",
                     render : function ( data, type, row ) {
                         if ( type === 'display' ) {
-                            return `<div style="width:250px"> ${data.slice(0,27)} <br> ${data.slice(28,data.length)} </div>`;
+                            return `<div style="width:250px">${data.slice(0,27)}<br>${data.slice(28,data.length)}</div>`;
                         }
                         return data;
                     }
@@ -238,7 +238,7 @@ $(document).ready(function() {
                 { width: "100px", targets: 4, class: "",
                     render : function ( data, type, row ) {
                         if ( type === 'display' ) {
-                            return `<div style="width:250px"> ${data.slice(0,27)} <br> ${data.slice(28,55)} <br> ${data.slice(56,data.length)} </div>`;
+                            return `<div style="width:250px">${data.slice(0,27)}<br>${data.slice(28,55)}<br>${data.slice(56,data.length)}</div>`;
                         }
                         return data;
                     }
@@ -313,7 +313,6 @@ $(document).ready(function() {
                 if (data.SubscribedUntil === null) {
                     $(row).addClass('text-danger');
                 }
-                
                 // var api = this.api();
                 // var longest = api.rows({page:'ALL'}).column(1).data().sort().reverse()[0];
                 // console.log(longest);
@@ -321,10 +320,10 @@ $(document).ready(function() {
             rowCallback: function(row, data) {
                 $('td:eq(0)', row).html(parseInt(data.UserId));
                 $('td:eq(5)', row).html(parseInt(data.ScottsOrgId));                
-                $('td:eq(7)', row).html(data.LastJournalUpdateDate !== null ? moment(data.LastJournalUpdateDate).format('dddd, MMMM Do, YYYY') : null);
-                $('td:eq(8)', row).html(data.CreatedAtUser !== null ? moment(data.CreatedAtUser).format('dddd, MMMM Do, YYYY') : null);
-                $('td:eq(9)', row).html(data.CreatedAtOrganization !== null ? moment(data.CreatedAtOrganization).format('dddd, MMMM Do, YYYY') : null);
-                $('td:eq(10)', row).html(data.SubscribedUntil !== null ? moment(data.SubscribedUntil).format('dddd, MMMM Do, YYYY') : null);
+                $('td:eq(7)', row).html(data.LastJournalUpdateDate !== null ? moment(data.LastJournalUpdateDate).format('L') : null);
+                $('td:eq(8)', row).html(data.CreatedAtUser !== null ? moment(data.CreatedAtUser).format('L') : null);
+                $('td:eq(9)', row).html(data.CreatedAtOrganization !== null ? moment(data.CreatedAtOrganization).format('L') : null);
+                $('td:eq(10)', row).html(data.SubscribedUntil !== null ? moment(data.SubscribedUntil).format('L') : null);
             },
             preDrawCallback: function(settings) {
                 // $('#example tbody').off( 'click', 'td' );
