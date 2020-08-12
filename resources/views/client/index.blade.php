@@ -111,7 +111,7 @@
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" id="subscribedBox">
                     <label class="form-check-label" id="subscribedBox" for="defaultCheck1">
-                        Subscribed only
+                        Subscribed Only
                     </label>
                 </div>
             </div>
@@ -180,7 +180,7 @@ $(document).ready(function() {
 
     $('.input-daterange').datepicker({
         todayBtn: 'linked',
-        format: 'mm-dd-yyyy',
+        format: 'yyyy-mm-dd',
         autoclose: true
     });
 
@@ -194,7 +194,7 @@ $(document).ready(function() {
 
     load_data();
 
-    function load_data(from_date = null, to_date = null, subscribedBox = null) {
+    function load_data(from_date = null, to_date = null, subscribedBox = false) {
         var table = $('.data-table').DataTable({
             processing: false,
             serverSide: false,
@@ -343,11 +343,15 @@ $(document).ready(function() {
     });
 
     $('#subscribedBox').click(function() {
+        $('#from_date').val('');
+        $('#to_date').val('');
+
         if (this.checked === true) {
-            $('.data-table').DataTable().rows('.text-danger').remove().draw();
+            $('.data-table').DataTable().destroy();
+            load_data(null, null, true);
         }else{
             $('.data-table').DataTable().destroy();
-            load_data();
+            load_data(null, null, false);
         }
     });
 
